@@ -306,15 +306,11 @@
       <Link>assets/extractor/%(RecursiveDir)%(Filename)%(Extension)</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(RecompDebugBuild)soh.dll">
+    <Content Include="$(RecompReleaseBuild)soh.dll">
       <Link>%(Filename)%(Extension)</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(SolutionDir)../soh/SHIPOFHARKINIAN.ico">
-      <Link>mods\.placeholder</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="$(SolutionDir)../*.otr">
+    <Content Include="$(SolutionDir)../soh.otr">
       <Link>%(Filename)%(Extension)</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
