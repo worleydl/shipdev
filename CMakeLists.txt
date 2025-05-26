@@ -8,6 +8,7 @@ set(CMAKE_OSX_DEPLOYMENT_TARGET "10.15" CACHE STRING "Minimum OS X deployment ve
 project(Ship VERSION 9.0.2 LANGUAGES C CXX)
 include(CMake/soh-cvars.cmake)
 include(CMake/lus-cvars.cmake)
+include(FetchContent)
 
 option(SUPPRESS_WARNINGS "Suppress warnings in LUS and src (decomp)" ON)
 if(SUPPRESS_WARNINGS)
@@ -76,13 +77,21 @@ add_compile_options($<$<CXX_COMPILER_ID:MSVC>:/MP>)
 add_compile_options($<$<CXX_COMPILER_ID:MSVC>:/utf-8>)
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+    # Fetch shared UWP deps
+    FetchContent_Declare(UwpLibs
+        GIT_REPOSITORY https://github.com/worleydl/uwp-dep.git
+        GIT_TAG 0cef7e0e25013f41af9acb3885f054ed38f70cdd
+    )
+    FetchContent_MakeAvailable(UwpLibs)
+
+    # Use vcpkg static for everything else
     include(CMake/automate-vcpkg.cmake)
 
     set(VCPKG_TRIPLET x64-windows-static)
     set(VCPKG_TARGET_TRIPLET x64-windows-static)
 
     vcpkg_bootstrap()
-    vcpkg_install_packages(zlib bzip2 libzip libpng sdl2 sdl2-net glew glfw3 nlohmann-json tinyxml2 spdlog)
+    vcpkg_install_packages(zlib bzip2 libzip libpng sdl2-net glew nlohmann-json tinyxml2 spdlog)
 
     if (CMAKE_C_COMPILER_LAUNCHER MATCHES "ccache|sccache")
         set(CMAKE_MSVC_DEBUG_INFORMATION_FORMAT Embedded)
@@ -158,6 +167,7 @@ set(GBI_UCODE F3DEX_GBI_2)
 # Set CONTROLLERBUTTONS_T
 ################################################################################
 add_compile_definitions(CONTROLLERBUTTONS_T=uint32_t)
+add_compile_definitions(_UWP=1)
 
 ################################################################################
 # Sub-projects
