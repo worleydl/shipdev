@@ -216,7 +216,8 @@ set(ALL_FILES
 ################################################################################
 # Target
 ################################################################################
-add_executable(${PROJECT_NAME} ${ALL_FILES})
+# [UWP] Modded to be a DLL for external launch by minimal wrapper
+add_library(${PROJECT_NAME} SHARED ${ALL_FILES})
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 use_props(${PROJECT_NAME} "${CMAKE_CONFIGURATION_TYPES}" "${DEFAULT_CXX_PROPS}")
@@ -640,16 +641,19 @@ add_dependencies(${PROJECT_NAME}
 endif()
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
-    find_package(glfw3 REQUIRED)
+        #find_package(glfw3 REQUIRED)
 	if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
 		set(ADDITIONAL_LIBRARY_DEPENDENCIES
 			"libultraship;"
 			"ZAPDLib;"
 			"glu32;"
-			"SDL2::SDL2;"
-			"SDL2::SDL2main;"
+			"SDL2;"
+			#"SDL2::SDL2;"
+			#"SDL2::SDL2main;"
             "$<$<BOOL:${BUILD_REMOTE_CONTROL}>:SDL2_net::SDL2_net-static>"
-			"glfw;"
+	                #"glfw;"
+			"GLFW3;"
+			"LIBUWP;"
 			"winmm;"
 			"imm32;"
 			"version;"
