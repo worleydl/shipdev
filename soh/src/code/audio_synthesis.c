@@ -713,7 +713,7 @@ Acmd* AudioSynth_ProcessNote(s32 noteIndex, NoteSubEu* noteSubEu, NoteSynthesisS
     s16* filter;
     s32 bookOffset;
     s32 finished;
-    s32 aligned;
+    s32 aligned, ramAlign;
     s16 addr;
     u16 unused;
 
@@ -886,7 +886,22 @@ Acmd* AudioSynth_ProcessNote(s32 noteIndex, NoteSubEu* noteSubEu, NoteSynthesisS
                     sampleDataStartPad = (uintptr_t)sampleData & 0xF;
                     aligned = ALIGN16((nFramesToDecode * frameSize) + 16);
                     addr = DMEM_COMPRESSED_ADPCM_DATA - aligned;
-                    aLoadBuffer(cmd++, sampleData - sampleDataStartPad, addr, aligned);
+
+                    // [UWP] UWP has access violations on RAM samples, make sure align is in bounds of sample
+                    // For more info see:
+                    // https://github.com/worleydl/shipdev/blob/64a5c0f674b8e372a2793bdbf7cfdc06b0070f3c/soh/src/code/audio_synthesis.c#L898
+                    if (audioFontSample->medium != MEDIUM_RAM) {
+                        aLoadBuffer(cmd++, sampleData - sampleDataStartPad, addr, aligned);
+                    } else {
+                        ramAlign =
+                            min((nFramesToDecode * frameSize) + 16,
+                                (audioFontSample->size) - (sampleDataOffset - sampleDataStartPad + sampleDataStart));
+
+                        aLoadBufferNoRound(cmd++, sampleData - sampleDataStartPad, addr, ramAlign);
+                        aBackfillBuffer(addr + ramAlign,
+                                        aligned -
+                                            ramAlign); // Dunno if needed but I make believe this prevents artifacts
+                    }
                 } else {
                     nSamplesToDecode = 0;
                     sampleDataStartPad = 0;
