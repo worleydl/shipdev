@@ -1154,7 +1154,7 @@ extern "C" void InitOTR(int argc, char* argv[]) {
     Ship::WiiU::Init(appShortName);
 #endif
 
-#ifdef _WIN32
+#if defined(_WIN32) && !defined(_UWP)
     char* tempVar = getenv("TEMP");
     std::filesystem::path tempPath;
     try {

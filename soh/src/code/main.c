@@ -3,6 +3,11 @@
 #include <locale.h>
 #endif
 
+#ifdef _UWP
+#define SDLMAIN_DECLSPEC __declspec(dllexport)
+#include "SDL_main.h"
+#endif
+
 #include "global.h"
 #include "vt.h"
 #include "stdio.h"
