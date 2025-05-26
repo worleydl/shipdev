@@ -32,8 +32,10 @@
 #undef aUnkCmd3
 #undef aUnkCmd19
 
+void aBackfillBufferImpl(uint16_t addr, int nbytes);
 void aClearBufferImpl(uint16_t addr, int nbytes);
 void aLoadBufferImpl(const void* source_addr, uint16_t dest_addr, uint16_t nbytes);
+void aLoadBufferNoRoundImpl(const void* source_addr, uint16_t dest_addr, uint16_t nbytes);
 void aSaveBufferImpl(uint16_t source_addr, int16_t* dest_addr, uint16_t nbytes);
 void aLoadADPCMImpl(int num_entries_times_16, const int16_t* book_source_addr);
 void aSetBufferImpl(uint8_t flags, uint16_t in, uint16_t out, uint16_t nbytes);
@@ -65,8 +67,10 @@ void aOPUSdecImpl(void* source_addr, uint16_t dest_addr, uint16_t nbytes, struct
 #define aSegment(pkt, s, b) \
     do {                    \
     } while (0)
+#define aBackfillBuffer(d, c) aBackfillBufferImpl(d, c)
 #define aClearBuffer(pkt, d, c) aClearBufferImpl(d, c)
 #define aLoadBuffer(pkt, s, d, c) aLoadBufferImpl(s, d, c)
+#define aLoadBufferNoRound(pkt, s, d, c) aLoadBufferNoRoundImpl(s, d, c)
 #define aSaveBuffer(pkt, s, d, c) aSaveBufferImpl(s, d, c)
 #define aLoadADPCM(pkt, c, d) aLoadADPCMImpl(c, d)
 #define aSetBuffer(pkt, f, i, o, c) aSetBufferImpl(f, i, o, c)

@@ -89,6 +89,10 @@ static inline int32_t clamp32(int64_t v) {
     return (int32_t)v;
 }
 
+void aBackfillBufferImpl(uint16_t addr, int nbytes) {
+    memset(BUF_U8(addr), 0, nbytes);
+}
+
 void aClearBufferImpl(uint16_t addr, int nbytes) {
     nbytes = ROUND_UP_16(nbytes);
     memset(BUF_U8(addr), 0, nbytes);
@@ -129,6 +133,10 @@ void aOPUSdecImpl(void* source_addr, uint16_t dest_addr, uint16_t nbytes, struct
 
 void aOPUSFree(struct OggOpusFile* opusFile) {
     op_free(opusFile);
+}
+
+void aLoadBufferNoRoundImpl(const void* source_addr, uint16_t dest_addr, uint16_t nbytes) {
+    memcpy(BUF_U8(dest_addr), source_addr, nbytes);
 }
 
 void aSaveBufferImpl(uint16_t source_addr, int16_t* dest_addr, uint16_t nbytes) {
