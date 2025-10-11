@@ -81,7 +81,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
     # Fetch shared UWP deps
     FetchContent_Declare(UwpLibs
         GIT_REPOSITORY https://github.com/worleydl/uwp-dep.git
-        GIT_TAG 0cef7e0e25013f41af9acb3885f054ed38f70cdd
+        GIT_TAG 0ec87d2406b47743772e2787654275a6f6c0e284
     )
     FetchContent_MakeAvailable(UwpLibs)
 
