@@ -360,7 +360,7 @@ void PresetsCustomWidget(WidgetInfo& info) {
     bool hideBuiltIn = CVarGetInteger(CVAR_GENERAL("HideBuiltInPresets"), 0);
     UIWidgets::PushStyleTabs(THEME_COLOR);
     if (ImGui::BeginTable("PresetWidgetTable", PRESET_SECTION_MAX + 3)) {
-        ImGui::TableSetupColumn("Name", ImGuiTableColumnFlags_WidthFixed, 250);
+        ImGui::TableSetupColumn("Name", ImGuiTableColumnFlags_WidthFixed, -1);
         for (int i = PRESET_SECTION_SETTINGS; i < PRESET_SECTION_MAX; i++) {
             ImGui::TableSetupColumn(blockInfo[i].names[0].c_str());
         }
