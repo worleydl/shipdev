@@ -28,7 +28,7 @@ add_executable(${PROJECT_NAME} WIN32
 set(BinDeps
 	${SOH_EXE_DIR}/soh.dll
 
-	${SOH_EXE_DIR}/soh.otr
+	${SOH_EXE_DIR}/soh.o2r
 
 	${SOH_BUILD_DIR}/_deps/uwplibs-src/x64/bin/dxil.dll
 	${SOH_BUILD_DIR}/_deps/uwplibs-src/x64/bin/glfw3.dll
