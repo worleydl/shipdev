@@ -233,20 +233,16 @@ void SohMenu::AddMenuSettings() {
         .CVar(CVAR_SETTING("A11yDisableIdleCam"))
         .RaceDisable(false)
         .Options(CheckboxOptions().Tooltip("Disables the automatic re-centering of the camera when idle."));
-// UWP TODO: Disabled in favor of autodetection based on tv resolution (for now, may bring this back)
-#ifndef _UWP
     AddWidget(path, "EXPERIMENTAL", WIDGET_SEPARATOR_TEXT).Options(TextOptions().Color(Colors::Orange));
-    AddWidget(path, "ImGui Menu Scaling", WIDGET_CVAR_COMBOBOX)
+    AddWidget(path, "ImGui Menu Scaling", WIDGET_CVAR_SLIDER_FLOAT)
         .CVar(CVAR_SETTING("ImGuiScale"))
         .RaceDisable(false)
-        .Options(ComboboxOptions()
-                     .ComboMap(imguiScaleOptions)
+        .Options(FloatSliderOptions()
                      .Tooltip("Changes the scaling of the ImGui menu elements.")
-                     .DefaultIndex(1)
-                     .ComponentAlignment(ComponentAlignments::Right)
-                     .LabelPosition(LabelPositions::Far))
-        .Callback([](WidgetInfo& info) { OTRGlobals::Instance->ScaleImGui(); });
-#endif
+                     .DefaultValue(defaultImGuiScale)
+                     .IsPercentage()
+                     .Min(0.5f)
+                     .Max(2.5f));
 
     // General - About
     path.column = SECTION_COLUMN_2;
@@ -339,7 +335,7 @@ void SohMenu::AddMenuSettings() {
                          "form of anti-aliasing.")
                 .ShowButtons(false)
                 .IsPercentage()
-                .Min(0.5f)
+                .Min(0.25f)
                 .Max(2.0f));
 #ifndef __WIIU__
     AddWidget(path, "Anti-aliasing (MSAA)", WIDGET_CVAR_SLIDER_INT)

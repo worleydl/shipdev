@@ -136,6 +136,10 @@ extern "C" {
 #include "src/overlays/actors/ovl_En_Dns/z_en_dns.h"
 }
 
+#ifdef _UWP
+extern "C" __declspec(dllimport) void uwp_GetScreenSize(int*, int*);
+#endif
+
 bool SoH_HandleConfigDrop(char* filePath);
 
 OTRGlobals* OTRGlobals::Instance;
@@ -427,6 +431,12 @@ void OTRGlobals::Initialize() {
 
     hasMasterQuest = hasOriginal = false;
 
+#ifdef _UWP
+    int uwp_w, uwp_h;
+    uwp_GetScreenSize(&uwp_w, &uwp_h);
+    defaultImGuiScale = uwp_h / 1080.0f;
+#endif
+
     previousImGuiScale = defaultImGuiScale;
 
     fontMonoSmall = CreateFontWithSize(14.0f, "fonts/Inconsolata-Regular.ttf");
@@ -495,11 +505,10 @@ OTRGlobals::~OTRGlobals() {
 }
 
 void OTRGlobals::ScaleImGui() {
-    float scale = imguiScaleOptionToValue[CVarGetInteger(CVAR_SETTING("ImGuiScale"), defaultImGuiScale)];
-    float newScale = scale / previousImGuiScale;
-    ImGui::GetStyle().ScaleAllSizes(newScale);
+    // DLW: Moved to float slider for more fine tune scaling
+    static ImGuiStyle baseStyle = ImGui::GetStyle(); // capture original once
+    float scale = CVarGetFloat(CVAR_SETTING("ImGuiScale"), defaultImGuiScale);
     ImGui::GetIO().FontGlobalScale = scale;
-    previousImGuiScale = scale;
 }
 
 ImFont* OTRGlobals::CreateDefaultFontWithSize(float size) {

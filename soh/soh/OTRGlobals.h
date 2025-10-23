@@ -40,6 +40,8 @@ const std::string appShortName = "soh";
 
 #ifdef __WIIU__
 const uint32_t defaultImGuiScale = 3;
+#elif _UWP
+float defaultImGuiScale = 1.0f;
 #else
 const uint32_t defaultImGuiScale = 1;
 #endif

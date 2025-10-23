@@ -35,10 +35,6 @@
 #include "soh/Enhancements/TimeDisplay/TimeDisplay.h"
 #include "soh/Enhancements/mod_menu.h"
 
-#ifdef _UWP
-extern "C" __declspec(dllimport) void uwp_GetScreenSize(int* x, int* y);
-#endif
-
 namespace SohGui {
 
 // MARK: - Properties
@@ -109,14 +105,6 @@ UIWidgets::Colors GetMenuThemeColor() {
 
 void SetupGuiElements() {
     auto gui = Ship::Context::GetInstance()->GetWindow()->GetGui();
-
-#ifdef _UWP
-    // Apply scaling for > 1080
-    int width, height;
-    uwp_GetScreenSize(&width, &height);
-    ImGuiIO& io = ImGui::GetIO();
-    io.FontGlobalScale = height / 1080.0f;
-#endif
 
     /*mSohMenuBar = std::make_shared<SohMenuBar>(CVAR_MENU_BAR_OPEN, CVarGetInteger(CVAR_MENU_BAR_OPEN, 0));
     gui->SetMenuBar(std::reinterpret_pointer_cast<Ship::GuiMenuBar>(mSohMenuBar));

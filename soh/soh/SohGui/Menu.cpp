@@ -612,6 +612,9 @@ void Menu::DrawElement() {
     ImGui::PushStyleColor(ImGuiCol_WindowBg,
                           ImVec4(0, 0, 0, CVarGetFloat(CVAR_SETTING("Menu.BackgroundOpacity"), 0.85f)));
 
+    // DLW: FloatSliderOptions doesn't have a callback so apply scale here
+    OTRGlobals::Instance->ScaleImGui();
+
     if (!ImGui::Begin("Main Menu", NULL, windowFlags)) {
         if (!popout) {
             ImGui::PopStyleVar();
